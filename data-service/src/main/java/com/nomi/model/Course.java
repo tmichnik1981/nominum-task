@@ -24,9 +24,8 @@ public class Course implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "pk.course",
-        cascade = CascadeType.ALL)
-    private Set<UserCourse> userCourses;
+    @OneToMany(mappedBy = "user")
+    private Set<UserCourse> userCourses  =  new HashSet<>();;
 
     public Long getId() {
         return id;

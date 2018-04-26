@@ -31,9 +31,8 @@ public class User implements Serializable {
     private String name;
 
 
-   @OneToMany(mappedBy = "pk.user",
-        cascade = CascadeType.ALL)
-    private Set<UserCourse> userCourses;
+   @OneToMany(mappedBy = "course")
+    private Set<UserCourse> userCourses =  new HashSet<>();
 
     public Long getId() {
         return id;
