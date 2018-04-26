@@ -1,43 +1,39 @@
 package com.nomi.service;
 
-import java.util.Optional;
-import java.util.Set;
-
-import com.nomi.model.UserCourse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.nomi.dto.UserDto;
+import com.nomi.dto.mapping.UserMapper;
+import com.nomi.exception.ResourceNotFoundException;
 import com.nomi.model.User;
 import com.nomi.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 public class UserService {
-	
-	private final UserRepository userRepository;
 
-	public UserDto getUser(String userId) {
+    private final UserRepository userRepository;
 
-		User user = userRepository.findByIndentifier("user-has-F-grade").get();
-		Set<UserCourse> userCourses =  user.getCourses();
+    private final UserMapper userMapper;
 
-		UserDto userDto = new UserDto();
-		userDto.setTotal(12);
-		userDto.setUser(2);
-		
-		//TODO: add mapping to DTO
-		return userDto;
-	}
+    public UserDto getUser(String userId) {
 
-	@Autowired
-	public UserService(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
-	
-	
-	
-	
+        Optional<User> userOptional = userRepository.findByIndentifier(userId);
+
+        userOptional.orElseThrow( () ->  new ResourceNotFoundException());
+
+        return userMapper.toUserDto(userOptional.get());
+
+    }
+
+    @Autowired
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+    }
+
 
 }

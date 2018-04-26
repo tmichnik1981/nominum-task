@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -24,8 +25,8 @@ public class User implements Serializable {
     @Column(name = "indentifier", nullable = false)
     private String indentifier;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
-    private Set<UserCourse> courses;
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+    private Set<UserCourse> courses = new HashSet<>();
 
     public Long getId() {
         return id;

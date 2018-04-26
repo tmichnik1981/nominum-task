@@ -20,7 +20,7 @@ public class SwaggerConfiguration {
             .groupName("public-api")
             .apiInfo(apiInfo())
             .select()
-            .apis(RequestHandlerSelectors.basePackage("com.nomi.controllers"))
+            .apis(RequestHandlerSelectors.basePackage("com.nomi.rest"))
             .build();
     }
 
