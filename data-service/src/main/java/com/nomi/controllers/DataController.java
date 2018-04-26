@@ -17,12 +17,12 @@ public class DataController {
 
     private final UserService userService;
 
-    @RequestMapping(value = "/{userId}",
+    @RequestMapping(value = "/{user-id}",
         produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
         method = RequestMethod.GET)
-    public ResponseEntity<UserDto> getData(@PathVariable("userId") Long userId) {
+    public ResponseEntity<UserDto> getData(@PathVariable("user-id") String userIdentifier) {
 
-        UserDto userDto = userService.getUser(userId);
+        UserDto userDto = userService.getUser(userIdentifier);
 
         return new ResponseEntity<>(userDto, HttpStatus.OK);
 

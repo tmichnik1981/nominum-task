@@ -8,7 +8,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>data-service</name>
+	<indentifier>data-service</indentifier>
 	<description>Data Service</description>
 
 	<parent>

@@ -1,6 +1,6 @@
 
-INSERT INTO users (user_id, name) VALUES (1, 'user-has-A-grade');
-INSERT INTO users (user_id, name) VALUES (2, 'user-has-F-grade');
+INSERT INTO users (user_id, indentifier) VALUES (1, 'user-has-A-grade');
+INSERT INTO users (user_id, indentifier) VALUES (2, 'user-has-F-grade');
 INSERT INTO courses (course_id, name) VALUES (1, 'Animation');
 INSERT INTO courses (course_id, name) VALUES (2, 'App development');
 INSERT INTO courses (course_id, name) VALUES (3, 'Audio production');

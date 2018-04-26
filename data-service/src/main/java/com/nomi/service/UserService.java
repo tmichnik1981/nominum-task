@@ -18,10 +18,9 @@ public class UserService {
 	
 	private final UserRepository userRepository;
 
-	@Transactional
-	public UserDto getUser(Long userId) {
+	public UserDto getUser(String userId) {
 
-		User user = userRepository.findById(2l).get();
+		User user = userRepository.findByIndentifier("user-has-F-grade").get();
 		Set<UserCourse> userCourses =  user.getCourses();
 
 		UserDto userDto = new UserDto();
