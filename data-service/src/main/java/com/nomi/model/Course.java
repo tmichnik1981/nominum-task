@@ -24,8 +24,8 @@ public class Course implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "user")
-    private Set<UserCourse> userCourses  =  new HashSet<>();;
+    @OneToMany(mappedBy = "course")
+    private Set<UserCourse> users;
 
     public Long getId() {
         return id;
@@ -43,11 +43,11 @@ public class Course implements Serializable {
         this.name = name;
     }
 
-    public Set<UserCourse> getUserCourses() {
-        return userCourses;
+    public Set<UserCourse> getUsers() {
+        return users;
     }
 
-    public void setUserCourses(Set<UserCourse> userCourses) {
-        this.userCourses = userCourses;
-    }
+
 }
+
+

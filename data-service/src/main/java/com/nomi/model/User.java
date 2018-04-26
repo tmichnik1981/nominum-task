@@ -30,9 +30,8 @@ public class User implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-
-   @OneToMany(mappedBy = "course")
-    private Set<UserCourse> userCourses =  new HashSet<>();
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    private Set<UserCourse> courses;
 
     public Long getId() {
         return id;
@@ -50,11 +49,11 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public Set<UserCourse> getUserCourses() {
-        return userCourses;
+    public Set<UserCourse> getCourses() {
+        return courses;
     }
 
-    public void setUserCourses(Set<UserCourse> userCourses) {
-        this.userCourses = userCourses;
+    public void setCourses(Set<UserCourse> courses) {
+        this.courses = courses;
     }
 }
