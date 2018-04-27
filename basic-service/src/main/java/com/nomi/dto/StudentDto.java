@@ -1,13 +1,8 @@
 package com.nomi.dto;
 
-import lombok.Builder;
-import lombok.Data;
-
 import java.util.Set;
 
-@Data
-@Builder
-public class UserDto {
+public class StudentDto {
 
     private String user;
     private Integer total;
