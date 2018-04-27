@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class AuthenticationEntryPoint  extends BasicAuthenticationEntryPoint {
+public class AuthenticationEntryPoint   extends BasicAuthenticationEntryPoint {
+
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.sendError(HttpServletResponse.SC_FORBIDDEN, "Authentication Failed");
@@ -21,5 +22,6 @@ public class AuthenticationEntryPoint  extends BasicAuthenticationEntryPoint {
         setRealmName("NomiRealm");
         super.afterPropertiesSet();
     }
+
 
 }

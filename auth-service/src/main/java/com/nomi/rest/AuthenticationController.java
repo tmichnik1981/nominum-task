@@ -1,6 +1,6 @@
 package com.nomi.rest;
 
-import com.nomi.dto.UserDto;
+import com.nomi.dto.CredentialsDto;
 import com.nomi.service.AuthenticationService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -30,9 +30,9 @@ public class AuthenticationController {
     @RequestMapping(value = "/auth",
         consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
         method = RequestMethod.POST)
-    public ResponseEntity<Void> auth(@RequestBody @Valid final UserDto userDto) {
+    public ResponseEntity<Void> auth(@RequestBody @Valid final CredentialsDto credentialsDto) {
 
-        authenticationService.authenticate(userDto);
+        authenticationService.authenticate(credentialsDto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -1,7 +1,8 @@
 package com.nomi.rest.error;
 
 import com.google.common.base.Throwables;
-
+import com.nomi.exception.CredentialsException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,17 +28,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, createExceptionDefaultHttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
-/*
-    @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseBody
-    public ResponseEntity<ErrorInfoDto> handleNotFoundError(ResourceNotFoundException e) {
-        ErrorInfoDto error =
-            new ErrorInfoDto(HttpStatus.NOT_FOUND.value(),
-                StringUtils.defaultString(e.getMessage(), HttpStatus.NOT_FOUND.getReasonPhrase()));
 
-        return new ResponseEntity<>(error, createExceptionDefaultHttpHeaders(), HttpStatus.NOT_FOUND);
+    @ExceptionHandler(CredentialsException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorInfoDto> handleNotFoundError(CredentialsException e) {
+        ErrorInfoDto error =
+            new ErrorInfoDto(HttpStatus.UNAUTHORIZED.value(),
+                StringUtils.defaultString(e.getMessage(), HttpStatus.UNAUTHORIZED.getReasonPhrase()));
+
+        return new ResponseEntity<>(error, createExceptionDefaultHttpHeaders(), HttpStatus.UNAUTHORIZED);
     }
-*/
+
 
     private HttpHeaders createExceptionDefaultHttpHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();

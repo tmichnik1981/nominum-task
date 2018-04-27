@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
+
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -23,7 +24,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-        .authorizeRequests()
+            .csrf().disable()
+            .authorizeRequests()
+
             .antMatchers("/").permitAll()
             .anyRequest().authenticated()
             .and()
@@ -32,13 +35,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     }
 
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance())
             .withUser(login).password(password).roles("ADMIN");
 
     }
-
-
 }
