@@ -23,7 +23,7 @@ public class DataController {
     @ApiOperation(value = "Get user with courses")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "User was found"),
         @ApiResponse(code = 403, message = "Not authenticated"),
-        @ApiResponse(code = 403, message = "User does not exist"),
+        @ApiResponse(code = 404, message = "User does not exist"),
     })
     @RequestMapping(value = "/{user-id}",
         produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
