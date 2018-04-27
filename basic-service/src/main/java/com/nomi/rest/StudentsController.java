@@ -23,7 +23,6 @@ public class StudentsController {
 
     @ApiOperation(value = "Get user with courses")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Student's data found"),
-        @ApiResponse(code = 403, message = "Not authenticated"),
         @ApiResponse(code = 404, message = "No data found in Data service"),
         @ApiResponse(code = 500, message = "Could not access Data service"),
         @ApiResponse(code = 503, message = "Data service is unavailable.")

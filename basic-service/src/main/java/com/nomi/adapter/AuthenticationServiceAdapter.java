@@ -1,27 +1,27 @@
 package com.nomi.adapter;
 
 import com.nomi.dto.CredentialsDto;
+import com.nomi.exception.ServiceUnAvailableException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
-import javax.validation.Valid;
 
 @Service
 public class AuthenticationServiceAdapter {
 
 
- /*   auth.login=auth-admin
-    auth.password=admin1
-    auth.host=localhost:8081*/
+    private static final String AUTH_SERVICE_REQ_MAPPING = "/auth";
 
-    @Value("${auth.login}")
-    private String authServiceUser;
-    @Value("${auth.password}")
-    private String authServicePass;
+    @Value("${protocol}")
+    private String protocol;
+
     @Value("${auth.host}")
     private String authServiceHost;
 
@@ -30,16 +30,28 @@ public class AuthenticationServiceAdapter {
 
     public void authenticate(CredentialsDto credentialsDto) {
 
-        RestTemplate template = new RestTemplate();
+        String url = buildURL();
 
-        ResponseEntity<Void> response = template.postForEntity("http://localhost:8081/auth",credentialsDto,  Void.class);
+        HttpEntity<CredentialsDto> credentialsHttpEntity = new HttpEntity(credentialsDto);
 
+        try {
+            ResponseEntity<Void> response = authServiceClient.exchange(
+                url,
+                HttpMethod.POST, credentialsHttpEntity, Void.class);
 
-        System.out.println(response);
+        } catch (ResourceAccessException exception) {
+            throw new ServiceUnAvailableException("Authorization-Service is down", exception);
+        } catch (RestClientException exception) {
+            throw exception;
+        }
+    }
+
+    private String buildURL() {
+        return protocol + "://" + authServiceHost + AUTH_SERVICE_REQ_MAPPING;
     }
 
     @Autowired
-    public AuthenticationServiceAdapter( @Qualifier("authServiceClient") RestTemplate authServiceClient) {
+    public AuthenticationServiceAdapter(@Qualifier("authServiceClient") RestTemplate authServiceClient) {
         this.authServiceClient = authServiceClient;
     }
 

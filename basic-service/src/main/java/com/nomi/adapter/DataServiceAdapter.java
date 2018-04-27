@@ -1,16 +1,21 @@
 package com.nomi.adapter;
 
 import com.nomi.dto.StudentDto;
+import com.nomi.exception.ServiceUnAvailableException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class DataServiceAdapter {
 
+    private static final String DATA_SERVICE_REQ_MAPPING = "/data/{user-id}";
 
     @Value("${protocol}")
     private String protocol;
@@ -22,24 +27,32 @@ public class DataServiceAdapter {
 
     public ResponseEntity<StudentDto> getStudent(String userIdentifier) {
 
-        String url = protocol+ "://"+dataServiceHost + "/data/{user-id}";
+        String url = buildURL();
 
-        ResponseEntity<StudentDto> response = dataServiceClient.getForEntity(url, StudentDto.class, userIdentifier );
+        ResponseEntity<StudentDto> response = null;
+        try {
 
-        System.out.println(response);
+            response = dataServiceClient.exchange(
+                url,
+                HttpMethod.GET, null, StudentDto.class, userIdentifier);
 
+        } catch (ResourceAccessException exception) {
+            //server is down
+            throw new ServiceUnAvailableException("Data-Service is down", exception);
+        } catch (RestClientException exception) {
+            throw exception;
+        }
         return response;
-
-
-
-        /*restTemplate.exchange(
-            "http://localhost:8080/spring-security-rest-template/api/foos/1",
-            HttpMethod.GET, null, Foo.class);*/
 
     }
 
+    private String buildURL() {
+        return protocol + "://" + dataServiceHost + DATA_SERVICE_REQ_MAPPING;
+    }
+
+
     @Autowired
-    public DataServiceAdapter( @Qualifier("dataServiceClient") RestTemplate dataServiceClient) {
+    public DataServiceAdapter(@Qualifier("dataServiceClient") RestTemplate dataServiceClient) {
         this.dataServiceClient = dataServiceClient;
     }
 
